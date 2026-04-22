@@ -30,34 +30,43 @@
     <script src="./script.js"></script>
     <script>
         let tarefas = [];
+        let editandoIndex = null;
 
         function adicionarTarefa(){
             const input = document.getElementById('tarefaInput');
             const tarefa = input.value.trim();
             if(tarefa){
-                tarefas.push(tarefa);
+                if(editandoIndex === null){
+                    tarefas.push(tarefa)
+                }else{
+                    tarefas[editandoIndex] = tarefa;
+                    editandoIndex = null
+                }
                 input.value = '';
-                atualizarLista(); 
+                atualizarLista()
             }
         }
         function removerTarefa(index){
             tarefas.splice(index, 1);
             atualizarLista();
         }
+        function editarTarefa(index){
+           const input = document.getElementById('tarefaInput');
+           input.value = tarefas[index];
+           editandoIndex = index
+        }
         function atualizarLista(){
             const lista = document.getElementById('listaTarefas');
             lista.innerHTML = '';
-            tarefas.forEach((tarefa,index) =>{
+            tarefas.forEach((tarefa,index) => {
                 const li = document.createElement('li');
-                li.innerHTML=`${tarefa} <button onclick="removerTarefa(${index})">Remover</button> <button onclick="editarTarefa(${index})">Editar</button>`;
+                li.innerHTML=`${tarefa} 
+                    <button onclick="removerTarefa(${index})">Remover</button> 
+                    <button onclick="editarTarefa(${index})">Editar</button>`;
                 lista.appendChild(li);
             });
         }
-        function editarTarefa(index){
-           
-            tarefas[index] = prompt("Edite a tarefa:", tarefas[index]);
-            atualizarLista();
-        }
+        
     </script>
 </body>
 </html>
